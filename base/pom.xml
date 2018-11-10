@@ -23,7 +23,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>10</java.version>
     </properties>
-
+    <repositories>
+        <repository>
+            <id>feilong-repository</id>
+            <url>https://raw.github.com/venusdrogon/feilong-platform/repository</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -40,9 +45,26 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.1.19</version>
+        </dependency>
+        <dependency>
+            <groupId>com.feilong.platform</groupId>
+            <artifactId>feilong-util-all</artifactId>
+            <version>1.12.4</version>
+        </dependency>
     </dependencies>
 
     <build>
+        <outputDirectory>D:\JavaOutput\jdmy\${project.artifactId}\compile</outputDirectory>
+        <testOutputDirectory>D:\JavaOutput\jdmy\${project.artifactId}\compile</testOutputDirectory>
+        <directory>D:\JavaOutput\jdmy\${project.artifactId}\publish</directory>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
