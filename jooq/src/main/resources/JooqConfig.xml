@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.11.0.xsd"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.jooq.org/xsd/jooq-codegen-3.11.0.xsd ">
+    <jdbc>
+        <!-- 配置需要的数据库的驱动，本例采用postgres -->
+        <driver>com.mysql.cj.jdbc.Driver</driver>
+        <!-- 配置数据库地址 -->
+        <url>jdbc:mysql://localhost:3306/jooq?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=true&amp;allowMultiQueries=true&amp;serverTimezone=UTC</url>
+        <!-- 配置数据库用户名-->
+        <user>root</user>
+        <!-- 配置数据库密码-->
+        <password>JDbi4dMYMs</password>
+    </jdbc>
+    <generator>
+        <!-- 代码生成器 -->
+        <name>org.jooq.codegen.JavaGenerator</name>
+        <database>
+            <!--强制为scheme1模式下所有的含有id域生成id-->
+            <syntheticPrimaryKeys>jooq\..*\.id</syntheticPrimaryKeys>
+            <!--是否重写主键   里面是正则表达式,将在没有主键的情况下,将符合条件的唯一键视为主键-->
+            <overridePrimaryKeys>override_primary_key</overridePrimaryKeys>
+            <!--            org.jooq.meta.ase.ASEDatabase-->
+            <!--            org.jooq.meta.auroramysql.AuroraMySQLDatabase-->
+            <!--            org.jooq.meta.aurorapostgres.AuroraPostgresDatabase-->
+            <!--            org.jooq.meta.cubrid.CUBRIDDatabase-->
+            <!--            org.jooq.meta.db2.DB2Database-->
+            <!--            org.jooq.meta.derby.DerbyDatabase-->
+            <!--            org.jooq.meta.firebird.FirebirdDatabase-->
+            <!--            org.jooq.meta.h2.H2Database-->
+            <!--            org.jooq.meta.hana.HANADatabase-->
+            <!--            org.jooq.meta.hsqldb.HSQLDBDatabase-->
+            <!--            org.jooq.meta.informix.InformixDatabase-->
+            <!--            org.jooq.meta.ingres.IngresDatabase-->
+            <!--            org.jooq.meta.mariadb.MariaDBDatabase-->
+            <!--            org.jooq.meta.mysql.MySQLDatabase-->
+            <!--            org.jooq.meta.oracle.OracleDatabase-->
+            <!--            org.jooq.meta.postgres.PostgresDatabase-->
+            <!--            org.jooq.meta.redshift.RedshiftDatabase-->
+            <!--            org.jooq.meta.sqldatawarehouse.SQLDataWarehouseDatabase-->
+            <!--            org.jooq.meta.sqlite.SQLiteDatabase-->
+            <!--            org.jooq.meta.sqlserver.SQLServerDatabase-->
+            <!--            org.jooq.meta.sybase.SybaseDatabase-->
+            <!--            org.jooq.meta.teradata.TeradataDatabase-->
+            <!--            org.jooq.meta.vertica.VerticaDatabase-->
+            <!--<name>org.jooq.util.mysql.MySQLDatabase</name>-->
+            <name>org.jooq.meta.mysql.MySQLDatabase</name>
+            <!--<name>org.jooq.util.postgres.PostgresDatabase</name>-->
+            <!--<name>org.meta.util.postgres.PostgresDatabase</name>-->
+
+            <!--include和exclude用于控制为数据库中哪些表生成代码-->
+            <includes>.*</includes>
+            <!--<excludes></excludes>-->
+
+            <!--数据库名称-->
+            <inputSchema>jooq</inputSchema>
+        </database>
+        <generate>
+            <!--是否生成dao和pojo-->
+            <daos>true</daos>
+            <pojos>true</pojos>
+            <!--是否把数据库时间类型映射到java 8时间类型-->
+            <javaTimeTypes>true</javaTimeTypes>
+            <!--<interfaces>true</interfaces>-->
+            <!--是否在生成的代码中添加spring注释，比如@Repository-->
+            <springAnnotations>true</springAnnotations>
+        </generate>
+
+        <target>
+            <!--生成代码文件的包名及放置目录-->
+            <packageName>cn.bushadie.jooq.generator</packageName>
+            <directory>src/main/java</directory>
+        </target>
+    </generator>
+    <logging>DEBUG</logging>
+
+</configuration>
