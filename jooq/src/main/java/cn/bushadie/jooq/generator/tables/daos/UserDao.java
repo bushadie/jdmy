@@ -89,11 +89,4 @@ public class UserDao extends DAOImpl<UserRecord, cn.bushadie.jooq.generator.tabl
     public List<cn.bushadie.jooq.generator.tables.pojos.User> fetchByModified(LocalDateTime... values) {
         return fetch(User.USER.MODIFIED, values);
     }
-
-    /**
-     * Fetch records that have <code>VERSION IN (values)</code>
-     */
-    public List<cn.bushadie.jooq.generator.tables.pojos.User> fetchByVersion(Integer... values) {
-        return fetch(User.USER.VERSION, values);
-    }
 }

@@ -23,13 +23,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -2077909176;
+    private static final long serialVersionUID = 394055996;
 
     private String        id;
     private String        name;
     private Integer       age;
     private LocalDateTime modified;
-    private Integer       version;
 
     public User() {}
 
@@ -38,21 +37,18 @@ public class User implements Serializable {
         this.name = value.name;
         this.age = value.age;
         this.modified = value.modified;
-        this.version = value.version;
     }
 
     public User(
         String        id,
         String        name,
         Integer       age,
-        LocalDateTime modified,
-        Integer       version
+        LocalDateTime modified
     ) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.modified = modified;
-        this.version = version;
     }
 
     public String getId() {
@@ -87,14 +83,6 @@ public class User implements Serializable {
         this.modified = modified;
     }
 
-    public Integer getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("User (");
@@ -103,7 +91,6 @@ public class User implements Serializable {
         sb.append(", ").append(name);
         sb.append(", ").append(age);
         sb.append(", ").append(modified);
-        sb.append(", ").append(version);
 
         sb.append(")");
         return sb.toString();

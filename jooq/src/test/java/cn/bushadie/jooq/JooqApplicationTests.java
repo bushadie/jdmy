@@ -14,7 +14,6 @@ import org.jooq.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -30,8 +29,6 @@ import static org.jooq.impl.DSL.row;
 public class JooqApplicationTests {
 
     @Autowired
-    //    @Qualifier("dslContextLock")
-    @Qualifier("dslContext")
     private DSLContext dslContext;
 
     @Autowired
@@ -42,10 +39,6 @@ public class JooqApplicationTests {
         System.out.println(dslContext);
     }
 
-    @Test
-    public void t1() {
-        System.out.println(dslContext);
-    }
 
     @Test
     public void select() {
@@ -96,8 +89,6 @@ public class JooqApplicationTests {
     public void insertSet() {
         dslContext.insertInto(Tables.USER)
                 .set(Tables.USER.NAME,"insertSet1")
-                .newRecord()
-                .set(Tables.USER.NAME,"insertSet2")
                 .execute();
     }
 
@@ -322,7 +313,7 @@ public class JooqApplicationTests {
      */
     @Test
     public void dao() {
-        List<User> list=userDao.fetchByName("aaa","bbb");
+        List<User> list=userDao.fetchByName("listner","bbb");
         System.out.println(list);
     }
 
@@ -331,6 +322,7 @@ public class JooqApplicationTests {
      */
     @Test
     public void generate() {
+        // TODO: 2019/4/19  nextval 相关
         BigInteger b1=dslContext.nextval("user");
         System.out.println(b1);
     }
@@ -377,21 +369,62 @@ public class JooqApplicationTests {
     public void optimisticLocking() {
 
         System.out.println(dslContext);
-        dslContext.settings().setExecuteWithOptimisticLockingExcludeUnversioned(true);
+        // 单独设置打开乐观锁的,但在bean注入时已经设置乐观了
+        dslContext.settings().setExecuteWithOptimisticLocking(true);
         System.out.println(dslContext);
         UserRecord user=dslContext.fetchOne(Tables.USER,Tables.USER.ID.eq("4"));
-        user.setName("locking");
+        user.setName("locking-+-");
         user.store();
     }
 
     @Test
-    public void saveListener() {
+    public void optimisticLockingVersion(){
+        dslContext.settings().setExecuteWithOptimisticLocking(true);
+        UserkvRecord kv1=dslContext.selectFrom(Tables.USERKV).where(Tables.USERKV.ID.eq("1")).fetchOne();
+        UserkvRecord kv2=dslContext.selectFrom(Tables.USERKV).where(Tables.USERKV.ID.eq("1")).fetchOne();
+        kv1.setV("kv3");
+        kv1.store();
+        kv2.setV("kv2");
+        kv2.store();
+    }
+
+    @Test
+    public void optimisticLockingModified() throws InterruptedException {
+        dslContext.settings().setExecuteWithOptimisticLocking(true);
+        dslContext.settings().setExecuteLogging(true); // 这个不知道有啥用
+        UserkvRecord u1=dslContext.selectFrom(Tables.USERKV).where(Tables.USERKV.ID.eq("1")).fetchOne();
+        UserkvRecord u2=dslContext.selectFrom(Tables.USERKV).where(Tables.USERKV.ID.eq("1")).fetchOne();
+        u1.setV("u3");
+        u1.store();
+
+        UserkvRecord u3=dslContext.selectFrom(Tables.USERKV).where(Tables.USERKV.ID.eq("1")).fetchOne();
+        u3.setV("kv3");
+        u3.store();
+//        Thread.sleep(20000);
+        u2.setV("2u");
+        u2.store();
+    }
+
+    /**
+     *  生成 record save
+     */
+    @Test
+    public void saveListener1() {
         UserRecord user=dslContext.newRecord(Tables.USER);
-        user.setName("listner");
+        user.setName("listener");
         user.store();
         // 注意!!  不refresh会出错
         user.refresh();
-        user.delete();
+//        user.delete();
+    }
+
+    /**
+     * 使用 insert 的方式插入
+     */
+    @Test
+    public void saveListener2(){
+        dslContext.insertInto(Tables.USER,Tables.USER.NAME)
+                .values("insert").execute();
     }
 
     /**
@@ -410,6 +443,10 @@ public class JooqApplicationTests {
         }catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void softDelete(){
     }
 
 }

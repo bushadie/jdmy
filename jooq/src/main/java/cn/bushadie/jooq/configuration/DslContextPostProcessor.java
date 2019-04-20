@@ -28,11 +28,13 @@ public class DslContextPostProcessor implements BeanFactoryPostProcessor, BeanPo
     public Object postProcessAfterInitialization(Object bean,String beanName) throws BeansException {
         // 得到这个bean,做相应处理
         if( "dslContext".equals(beanName) ){
+            System.out.println("dslContext bean 处理器");
             DSLContext dslContext=(DSLContext)bean;
             //  乐观锁配置
             dslContext.settings().setExecuteWithOptimisticLocking(true);
             // 监听器配置
-            dslContext.configuration().set(new DlsContextListener());
+            dslContext.configuration().set(new DslContextRecordListener())
+                    .set(new DslContextExecuteListener());
         }
         return bean;
     }
