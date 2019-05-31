@@ -63,20 +63,28 @@ public class JooqApplicationTests {
     @Test
     public void insertMultiple() {
         dslContext.insertInto(Tables.USER,
-                Tables.USER.NAME)
-                .values("aaa")
-                .values("bbb")
+                Tables.USER.NAME,Tables.USER.AGE)
+                .values("aaa",15)
+                .values("bbb",18)
+                .values("ccc",22)
+                .values("ddd",44)
+                .values("eee",55)
                 .execute();
     }
 
     @Test
     public void insertRecord() {
-        UserRecord user=new UserRecord();
+        UserRecord user = dslContext.newRecord(Tables.USER);
         user.setAge(111);
         user.setName("byz");
-        Batch batch=dslContext.batchStore(user);
+//        String id=IdUtil.fastSimpleUUID();
+//        System.out.println(id);
+//        user.setId(id);
+        dslContext.batchStore(user).execute();
         System.out.println("---------------------------");
         System.out.println(user.toString());
+//        通过 executeListener注入的id 不能refresh, 因为没有id,无法更新
+        user.refresh();
         System.out.println(user.intoList());
         System.out.println("---------------------------");
         System.out.println(user.getValue(Tables.USER.ID));
@@ -113,17 +121,6 @@ public class JooqApplicationTests {
 
     }
 
-    /**
-     * mysql 不行
-     */
-    @Test
-    public void updateFrom() {
-        dslContext.update(Tables.USER)
-                .set(Tables.USER.AGE,Tables.USER.AGE)
-                .from(Tables.USER)
-                .where(Tables.USER.ID.eq(Tables.USER.ID))
-                .execute();
-    }
 
     @Test
     public void delete() {

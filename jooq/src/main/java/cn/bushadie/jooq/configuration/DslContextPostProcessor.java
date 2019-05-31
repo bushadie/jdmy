@@ -33,8 +33,9 @@ public class DslContextPostProcessor implements BeanFactoryPostProcessor, BeanPo
             //  乐观锁配置
             dslContext.settings().setExecuteWithOptimisticLocking(true);
             // 监听器配置
-            dslContext.configuration().set(new DslContextRecordListener())
-                    .set(new DslContextExecuteListener());
+            dslContext.configuration()
+                    .set(new DslContextExecuteListener())
+                    .set(new DslContextRecordListener());
         }
         return bean;
     }
